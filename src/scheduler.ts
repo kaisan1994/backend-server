@@ -1,12 +1,9 @@
 import { applicationConfig } from 'config/serverConfig';
+import { drawWinner } from 'controllers/lottery';
 import cron from 'node-cron';
 
-const drawTask = cron.schedule(`${applicationConfig.drawIntervalInSecond} * * * * *`, () => {
-  try {
-    console.log(`cron job runs every ${applicationConfig.drawIntervalInSecond} seconds`);
-  } catch (error) {
-    console.error(error)
-  }
-});
+const drawTask = cron.schedule(`*/${applicationConfig.drawIntervalInSecond} * * * * *`, async () =>
+  drawWinner().catch((error) => console.error(error))
+);
 
 export { drawTask };
